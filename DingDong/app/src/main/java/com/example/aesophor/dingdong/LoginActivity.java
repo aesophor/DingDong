@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.aesophor.dingdong.network.Response;
+import com.example.aesophor.dingdong.network.StatusCode;
 import com.example.aesophor.dingdong.user.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,20 +27,29 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
+        TextView errorMessage = findViewById(R.id.errorMessage);
         String username = ((EditText) findViewById(R.id.usernameField)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordField)).getText().toString();
 
         try {
             Response login = User.login(username, password);
-            if (login.success()) {
-                Intent intent = new Intent(this, MessengerActivity.class);
-                intent.putExtra("username", username);
-                startActivity(intent);
-            } else {
 
+            switch (login.getStatusCode()) {
+                case SUCCESS: {
+                    Intent intent = new Intent(this, MessengerActivity.class);
+                    intent.putExtra("username", username);
+                    startActivity(intent);
+                    break;
+                }
+                case VALIDATION_ERR: {
+                    errorMessage.setText("Incorrect username/password");
+                    break;
+                }
+                default:
+                    break;
             }
         } catch (Exception ex) {
-            ((TextView) findViewById(R.id.errorMessage)).setText("Unable to connect to server");
+            errorMessage.setText("Unable to connect to server");
             ex.printStackTrace();
         }
     }

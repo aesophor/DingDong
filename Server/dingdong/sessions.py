@@ -9,13 +9,6 @@ class OnlineUsers:
     @staticmethod
     def add(user: User):
         if not OnlineUsers.has(user):
-            # The SocketServer which listens for events will start
-            # only after the user has SUCCESSFULLY logged in!
-            # Hence, the order of the following two lines of code
-            # DOES matter. If we reverse their order, the dispatcher
-            # will get a connection refused error
-            # (since the SocketServer has not yet started) :)
-            dispatch(LoginEvent(user), OnlineUsers.users)
             OnlineUsers.users.append(user)
         else:
             raise AlreadyLoggedIn("This user has already logged in.")
@@ -23,12 +16,7 @@ class OnlineUsers:
     @staticmethod
     def remove(user: User):
         if OnlineUsers.has(user):
-            # Remove the user from OnlineUsers list first,
-            # so that the server will not dispatch this event to 
-            # the logging out user whose SocketServer
-            # has already shutdown.
             OnlineUsers.users.remove(user)
-            dispatch(LogoutEvent(user), OnlineUsers.users)
         else:
             raise NotLoggedIn("This user has already logged out.")
 
