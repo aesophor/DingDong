@@ -1,5 +1,5 @@
-from hacklympics.events.event_type import EventType
-from hacklympics.models import *
+from dingdong.events.event_type import EventType
+from dingdong.models import *
 
 import json
 
@@ -20,8 +20,6 @@ class LoginEvent(Event):
         event["content"] = {
             "username": self.user.username,
             "fullname": self.user.fullname,
-            "graduationYear": self.user.graduation_year,
-            "isStudent": self.user.is_student
         }
 
         return json.dumps(event)
@@ -38,32 +36,31 @@ class LogoutEvent(Event):
         event["content"] = {
             "username": self.user.username,
             "fullname": self.user.fullname,
-            "graduationYear": self.user.graduation_year,
-            "isStudent": self.user.is_student
         }
 
         return json.dumps(event)
 
 
 class NewMessageEvent(Event):
-    def __init__(self, user: User, exam: Exam, content: str):
+    def __init__(self, source_user: User, target_user: User, content: str):
         super(NewMessageEvent, self).__init__(EventType.NEW_MESSAGE)
-        self.user = user
-        self.exam = exam
+        self.source_user = source_user
+        self.target_user = target_user
         self.content = content
 
     def __str__(self):
         event = {"eventType": self.event_type}
 
         event["content"] = {
+            "source_user": {
+                "username": self.source_user.username,
+                "fullname": self.source_user.fullname
+            },
+            "target_user": {
+                "username": self.target_user.username,
+                "fullname": self.target_user.fullname
+            },
             "content": self.content,
-            "examID": self.exam.id,
-            "user": {
-                "username": self.user.username,
-                "fullname": self.user.fullname,
-                "graduationYear": self.user.graduation_year,
-                "isStudent": self.user.is_student
-            }
         }
 
         return json.dumps(event)

@@ -15,6 +15,15 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from dingdong.views import user, message
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^user/login$', user.login),
+    url(r'^user/logout$', user.logout),
+    url(r'^user/register$', user.register),
+    url(r'^user/update$', user.update),
+    url(r'^user/(?P<username>[\w.@+-]+)$', user.get),
+    url(r'^user/(?P<username>[\w.@+-]+)/friends$', user.list_friends)
 ]

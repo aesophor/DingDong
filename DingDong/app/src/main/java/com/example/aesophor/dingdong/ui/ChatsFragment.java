@@ -1,16 +1,17 @@
-package com.example.aesophor.dingdong;
+package com.example.aesophor.dingdong.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.example.aesophor.dingdong.R;
 import com.example.aesophor.dingdong.message.Message;
 import com.example.aesophor.dingdong.user.User;
-
-import org.jetbrains.annotations.Nullable;
 
 public class ChatsFragment extends Fragment {
 

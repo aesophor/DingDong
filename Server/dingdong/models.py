@@ -25,10 +25,10 @@ class User(models.Model):
 
 class Message(models.Model):
     source_ip = models.CharField(max_length=16)
-    source_user = models.ForeignKey('User')
-    target_user = models.ForeignKey('User')
+    source_user = models.ForeignKey('User', related_name="source_user")
+    target_user = models.ForeignKey('User', related_name="target_user")
     content = models.CharField(max_length=256)
-    is_read = models.BinaryField()
+    is_read = models.BooleanField(default=False)
 
     create_time = models.DateTimeField(editable=False)
 
@@ -38,4 +38,5 @@ class Message(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return ": ".join((self.user.fullname, self.content))
+        return "[%s->%s] %s".format(
+            self.source_user.username, self.target_user.username, self.content)

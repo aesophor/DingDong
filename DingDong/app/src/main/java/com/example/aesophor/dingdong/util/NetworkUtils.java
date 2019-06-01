@@ -18,19 +18,21 @@ public class NetworkUtils {
     private static final OkHttpClient CLIENT;
     private static final Gson GSON;
     private static final String SERVER_URL;
+    private static final int SERVER_PORT;
 
     static {
         JSON = MediaType.parse("application/json; charset=utf-8");
         CLIENT = new OkHttpClient();
         GSON = new Gson();
-        SERVER_URL = "127.0.0.1";
+        SERVER_URL = "192.168.1.102";
+        SERVER_PORT = 8000;
     }
 
     private NetworkUtils() {}
 
 
     public static String get(String uri) {
-        String url = String.format("%s/%s", SERVER_URL, uri);
+        String url = String.format("http://%s:%d/%s", SERVER_URL, SERVER_PORT, uri);
         Request request = new Request.Builder().url(url).build();
 
         try {
@@ -43,7 +45,7 @@ public class NetworkUtils {
     }
 
     public static String post(String uri, String json) {
-        String url = String.format("%s/%s", SERVER_URL, uri);
+        String url = String.format("http://%s:%d/%s", SERVER_URL, SERVER_PORT, uri);
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder().url(url).post(body).build();
 

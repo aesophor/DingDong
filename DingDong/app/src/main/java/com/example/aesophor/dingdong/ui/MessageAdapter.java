@@ -1,4 +1,4 @@
-package com.example.aesophor.dingdong;
+package com.example.aesophor.dingdong.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.aesophor.dingdong.R;
 import com.example.aesophor.dingdong.message.Message;
 
 import java.util.ArrayList;

@@ -1,5 +1,5 @@
-from hacklympics.events.event_type import EventType
-from hacklympics.events.events import *
+from dingdong.events.event_type import EventType
+from dingdong.events.events import *
 
 import socket
 import json

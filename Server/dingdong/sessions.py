@@ -1,10 +1,7 @@
-from hacklympics.exceptions import *
-from hacklympics.events.events import *
-from hacklympics.events.dispatcher import dispatch
-from hacklympics.models import User, Exam
-
-from threading import Timer
-import time
+from dingdong.exceptions import *
+from dingdong.events.events import *
+from dingdong.events.dispatcher import dispatch
+from dingdong.models import User
 
 class OnlineUsers:
     users = []
