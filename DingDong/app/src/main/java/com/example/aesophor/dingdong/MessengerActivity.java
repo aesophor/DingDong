@@ -2,13 +2,23 @@ package com.example.aesophor.dingdong;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.example.aesophor.dingdong.network.Response;
 import com.example.aesophor.dingdong.ui.ChatsFragment;
 import com.example.aesophor.dingdong.ui.FriendsFragment;
 import com.example.aesophor.dingdong.ui.SettingsFragment;
@@ -22,9 +32,10 @@ public class MessengerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.messenger_activity);
+        setContentView(R.layout.activity_messenger);
 
         user = new User(getIntent().getStringExtra("username"));
+        Log.i("MessengerActivity.java", "logged in as: " + user.getUsername());
 
         fragments = new ArrayList<>();
         fragments.add(new FriendsFragment());
@@ -67,6 +78,49 @@ public class MessengerActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, fragments.get(0));
         transaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.overflow_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.signOut: {
+                signOut();
+                return true;
+            }
+            case R.id.about: {
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void signOut() {
+        try {
+            Response signOut = user.logout();
+
+            switch (signOut.getStatusCode()) {
+                case SUCCESS: {
+                    startActivity(new Intent(MessengerActivity.this, SignInActivity.class));
+                    break;
+                }
+                default:
+                    break;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 

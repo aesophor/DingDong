@@ -73,10 +73,10 @@ public class MessageAdapter extends BaseAdapter {
         return convertView;
     }
 
-}
+    private class MessageViewHolder {
+        public View avatar;
+        public TextView name;
+        public TextView messageBody;
+    }
 
-class MessageViewHolder {
-    public View avatar;
-    public TextView name;
-    public TextView messageBody;
 }

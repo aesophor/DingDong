@@ -6,37 +6,42 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.aesophor.dingdong.network.Response;
-import com.example.aesophor.dingdong.network.StatusCode;
 import com.example.aesophor.dingdong.user.User;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_sign_in);
 
-        findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.signInButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                signIn();
+            }
+        });
+
+        findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
             }
         });
     }
 
-    private void login() {
+    private void signIn() {
         TextView errorMessage = findViewById(R.id.errorMessage);
         String username = ((EditText) findViewById(R.id.usernameField)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordField)).getText().toString();
 
         try {
-            Response login = User.login(username, password);
+            Response signIn = User.login(username, password);
 
-            switch (login.getStatusCode()) {
+            switch (signIn.getStatusCode()) {
                 case SUCCESS: {
-                    Intent intent = new Intent(this, MessengerActivity.class);
+                    Intent intent = new Intent(SignInActivity.this, MessengerActivity.class);
                     intent.putExtra("username", username);
                     startActivity(intent);
                     break;

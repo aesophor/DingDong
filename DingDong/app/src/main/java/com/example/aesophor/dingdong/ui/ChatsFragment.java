@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.example.aesophor.dingdong.R;
 import com.example.aesophor.dingdong.message.Message;
 import com.example.aesophor.dingdong.user.User;

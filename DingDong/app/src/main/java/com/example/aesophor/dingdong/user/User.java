@@ -28,24 +28,18 @@ public class User {
     }
 
 
-    public static Response list() {
-        String uri = String.format("user");
+    public static Response listFriends(String username) {
+        String uri = String.format("user/%s/friends", username);
         return new Response(NetworkUtils.get(uri));
     }
 
-    public static Response listOnline() {
-        String uri = String.format("user/online");
-        return new Response(NetworkUtils.get(uri));
-    }
-
-    public static Response register(String username, String password, String fullname) {
+    public static Response register(String username, String fullname, String password) {
         String uri = String.format("user/register");
 
         JsonObject json = new JsonObject();
         json.addProperty("username", username);
-        json.addProperty("password", password);
         json.addProperty("fullname", fullname);
-        json.addProperty("isStudent", true);
+        json.addProperty("password", password);
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
 
