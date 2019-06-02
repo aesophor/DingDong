@@ -16,21 +16,22 @@ public class NewMessageEvent extends Event {
 
         Map<String, Object> content = this.getContent();
 
-
-        // Extract the message content (message body).
-        String msgContent = content.get("content").toString();
-
-
         // Extract user from json content.
-        String rawUserJson = NetworkUtils.getGson().toJson(content.get("user"));
+        String rawUserJson = NetworkUtils.getGson().toJson(content.get("source_user"));
         JsonObject userJson = NetworkUtils.getGson().fromJson(rawUserJson, JsonObject.class);
-
         String username = userJson.get("username").getAsString();
         String fullname = userJson.get("fullname").getAsString();
+        User sender = new User(username, fullname);
 
-        // Create a new instance of Message.
-        User msgCreator = new User(username, fullname);
-        message = new Message(msgCreator, msgContent, false);
+        rawUserJson = NetworkUtils.getGson().toJson(content.get("target_user"));
+        userJson = NetworkUtils.getGson().fromJson(rawUserJson, JsonObject.class);
+        username = userJson.get("username").getAsString();
+        fullname = userJson.get("fullname").getAsString();
+        User receiver = new User(username, fullname);
+
+        String msgContent = content.get("content").toString();
+
+        message = new Message(sender, receiver, msgContent, false, false);
     }
 
 

@@ -124,12 +124,11 @@ def list_friends(request, username):
     return JsonResponse(response_data)
 
 
-def add_friend(request, username):
+def add_friend(request, source_username):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
     try:
         req_body = json.loads(request.body.decode("utf-8"))
-        source_username = username
         target_username = req_body["targetUsername"]
 
         source_user = User.objects.get(username=source_username)

@@ -16,12 +16,12 @@ import com.example.aesophor.dingdong.message.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageAdapter extends BaseAdapter {
+public class ChatAdapter extends BaseAdapter {
 
     List<Message> messages = new ArrayList<>();
     Context context;
 
-    public MessageAdapter(Context context) {
+    public ChatAdapter(Context context) {
         this.context = context;
     }
 
@@ -53,35 +53,29 @@ public class MessageAdapter extends BaseAdapter {
     // This is the backbone of the class, it handles the creation of single ListView row (chat bubble)
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        MessageViewHolder holder = new MessageViewHolder();
+        ChatViewHolder holder = new ChatViewHolder();
         LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         Message message = messages.get(i);
 
-        if (message.isBelongsToCurrentUser()) { // this message was sent by us so let's create a basic chat bubble on the right
-            convertView = messageInflater.inflate(R.layout.msg_bubble_self, null);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
-            convertView.setTag(holder);
-            holder.messageBody.setText(message.getContent());
-        } else { // this message was sent by someone else so let's create an advanced chat bubble on the left
-            convertView = messageInflater.inflate(R.layout.msg_bubble_others, null);
-            holder.avatar = (View) convertView.findViewById(R.id.avatar);
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
-            convertView.setTag(holder);
+        convertView = messageInflater.inflate(R.layout.msg_bubble_others, null);
+        holder.avatar = convertView.findViewById(R.id.avatar);
+        holder.name = convertView.findViewById(R.id.name);
+        holder.message = convertView.findViewById(R.id.message_body);
+        convertView.setTag(holder);
 
-            holder.name.setText(message.getUser().getUsername());
-            holder.messageBody.setText(message.getContent());
-            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
-            drawable.setColor(Color.parseColor("#a2c9b4"));
-        }
+        holder.name.setText(message.getSender().getUsername());
+        holder.message.setText(message.getContent());
+        holder.unreadCount.setText("5");
 
         return convertView;
     }
 
-    private class MessageViewHolder {
+    private class ChatViewHolder {
         public View avatar;
         public TextView name;
-        public TextView messageBody;
+        public TextView message;
+        public View unreadBubble;
+        public TextView unreadCount;
     }
 
 }

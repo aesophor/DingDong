@@ -2,6 +2,7 @@ package com.example.aesophor.dingdong.ui.friends;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -10,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.aesophor.dingdong.MessengerActivity;
 import com.example.aesophor.dingdong.R;
-import com.example.aesophor.dingdong.message.Message;
+import com.example.aesophor.dingdong.ui.Fragments;
+import com.example.aesophor.dingdong.ui.chats.ChatsFragment;
+import com.example.aesophor.dingdong.ui.messaging.MessagingFragment;
 import com.example.aesophor.dingdong.user.User;
 
 import java.util.ArrayList;
@@ -57,9 +61,9 @@ public class UserAdapter extends BaseAdapter {
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         FriendViewHolder holder = new FriendViewHolder();
         LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        User user = users.get(i);
+        final User user = users.get(i);
 
-        convertView = messageInflater.inflate(R.layout.user_profile_layout, null);
+        convertView = messageInflater.inflate(R.layout.layout_user_profile_item, null);
         holder.avatar = (View) convertView.findViewById(R.id.avatar);
         holder.name = (TextView) convertView.findViewById(R.id.name);
         convertView.setTag(holder);
@@ -67,6 +71,20 @@ public class UserAdapter extends BaseAdapter {
         GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
         drawable.setColor(Color.parseColor("#a2c9b4"));
         holder.name.setText(user.getFullname());
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("clicked: " + user.getUsername());
+
+                MessengerActivity messengerActivity = (MessengerActivity) context;
+                MessagingFragment msgFragment = (MessagingFragment) messengerActivity.getFragment(Fragments.MESSAGING);
+
+                msgFragment.setTargetUser(user);
+                messengerActivity.show(Fragments.MESSAGING);
+            }
+        });
+
         return convertView;
     }
 

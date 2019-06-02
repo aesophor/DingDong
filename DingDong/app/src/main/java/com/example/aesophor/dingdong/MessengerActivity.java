@@ -2,7 +2,6 @@ package com.example.aesophor.dingdong;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +15,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-
 import com.example.aesophor.dingdong.network.Response;
 import com.example.aesophor.dingdong.ui.Fragments;
 import com.example.aesophor.dingdong.ui.chats.ChatsFragment;
+import com.example.aesophor.dingdong.ui.messaging.MessagingFragment;
 import com.example.aesophor.dingdong.ui.friends.FriendsFragment;
 import com.example.aesophor.dingdong.ui.settings.SettingsFragment;
 import com.example.aesophor.dingdong.user.User;
@@ -41,6 +39,7 @@ public class MessengerActivity extends AppCompatActivity {
         fragments = new ArrayList<>(Fragments.SIZE.ordinal());
         fragments.add(new FriendsFragment());
         fragments.add(new ChatsFragment());
+        fragments.add(new MessagingFragment());
         fragments.add(new SettingsFragment());
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
@@ -53,24 +52,20 @@ public class MessengerActivity extends AppCompatActivity {
 
                         switch (item.getItemId()) {
                             case R.id.navigation_friends: {
-                                selectedFragment = fragments.get(Fragments.FRIENDS.ordinal());
+                                show(Fragments.FRIENDS);
                                 break;
                             }
                             case R.id.navigation_chats: {
-                                selectedFragment = fragments.get(Fragments.CHATS.ordinal());
+                                show(Fragments.CHATS);
                                 break;
                             }
                             case R.id.navigation_settings: {
-                                selectedFragment = fragments.get(Fragments.SETTINGS.ordinal());
+                                show(Fragments.SETTINGS);
                                 break;
                             }
                             default:
                                 break;
                         }
-
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout, selectedFragment);
-                        transaction.commit();
                         return true;
                     }
                 });
@@ -110,6 +105,12 @@ public class MessengerActivity extends AppCompatActivity {
         }
     }
 
+    public void show(Fragments fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, fragments.get(fragment.ordinal()));
+        transaction.commit();
+    }
+
 
     private void signOut() {
         try {
@@ -145,12 +146,14 @@ public class MessengerActivity extends AppCompatActivity {
                         fragment.update();
                     }
                 })
-
-                // A null listener allows the button to dismiss the dialog and take no further action.
                 .setNegativeButton(android.R.string.no, null)
                 .show();
     }
 
+
+    public Fragment getFragment(Fragments fragment) {
+        return fragments.get(fragment.ordinal());
+    }
 
     public User getUser() {
         return user;

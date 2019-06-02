@@ -9,8 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import com.example.aesophor.dingdong.R;
-import com.example.aesophor.dingdong.message.Message;
-import com.example.aesophor.dingdong.user.User;
+import com.example.aesophor.dingdong.ui.messaging.MessageAdapter;
 
 public class ChatsFragment extends Fragment {
 
@@ -29,16 +28,19 @@ public class ChatsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Activity mainActivity = (Activity) getContext();
+        update();
+    }
+
+    public void update() {
+        final Activity mainActivity = (Activity) getContext();
         ListView messageListView = mainActivity.findViewById(R.id.messageListView);
         messageListView.setAdapter(msgAdapter);
 
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                msgAdapter.add(new Message(new User("aesophor", "Marco"), "hi", true));
-                msgAdapter.add(new Message(new User("jimmy586586", "Jim"), "there", false));
-                msgAdapter.notifyDataSetChanged();
+                //msgAdapter.add(new Message(new User("aesophor", "Marco"), "hi", true));
+                //msgAdapter.add(new Message(new User("jimmy586586", "Jim"), "there", false));
             }
         });
     }

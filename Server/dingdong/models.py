@@ -38,5 +38,5 @@ class Message(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return "[%s->%s] %s".format(
+        return "[{}->{}] {}".format(
             self.source_user.username, self.target_user.username, self.content)

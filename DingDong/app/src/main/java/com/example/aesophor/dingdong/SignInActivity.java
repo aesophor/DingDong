@@ -50,6 +50,10 @@ public class SignInActivity extends AppCompatActivity {
                     errorMessage.setText("Incorrect username/password");
                     break;
                 }
+                case ALREADY_LOGGED_IN: {
+                    errorMessage.setText("This user is already logged in");
+                    break;
+                }
                 default:
                     break;
             }

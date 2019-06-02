@@ -24,7 +24,11 @@ urlpatterns = [
     url(r'^user/logout$', user.logout),
     url(r'^user/register$', user.register),
     url(r'^user/update$', user.update),
+
     url(r'^user/(?P<username>[\w.@+-]+)$', user.get),
     url(r'^user/(?P<username>[\w.@+-]+)/friends$', user.list_friends),
-    url(r'^user/(?P<username>[\w.@+-]+)/friends/add$', user.add_friend)
+
+    url(r'^user/(?P<source_username>[\w.@+-]+)/friends/add$', user.add_friend),
+    url(r'^user/(?P<source_username>[\w.@+-]+)/messages/create$', message.create),
+    url(r'^user/(?P<username1>[\w.@+-]+)/messages/(?P<username2>[\w.@+-]+)$', message.get),
 ]

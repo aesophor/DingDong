@@ -1,6 +1,6 @@
 package com.example.aesophor.dingdong.ui.friends;
 
-import android.app.Activity;
+import java.util.List;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,12 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.example.aesophor.dingdong.MessengerActivity;
 import com.example.aesophor.dingdong.R;
 import com.example.aesophor.dingdong.user.User;
-
-import java.util.List;
 
 public class FriendsFragment extends Fragment {
 
@@ -36,21 +33,22 @@ public class FriendsFragment extends Fragment {
     }
 
     public void update() {
-        Activity mainActivity = (Activity) getContext();
-        ListView messageListView = mainActivity.findViewById(R.id.friendsListView);
+        final MessengerActivity activity = (MessengerActivity) getContext();
+        final ListView messageListView = activity.findViewById(R.id.friendsListView);
         messageListView.setAdapter(userAdapter);
 
-        mainActivity.runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 userAdapter.clear();
-                userAdapter.add(new User("aesophor", "Marco"));
+                userAdapter.add(activity.getUser());
 
                 List<User> friends = ((MessengerActivity) getActivity()).getUser().getFriends();
                 for (User friend : friends) {
                     userAdapter.add(friend);
                 }
-                userAdapter.notifyDataSetChanged();
+
+                // OnClickListener is defined in UserAdapter
             }
         });
     }

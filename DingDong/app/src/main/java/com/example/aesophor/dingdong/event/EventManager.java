@@ -32,17 +32,16 @@ public class EventManager {
 
 
     /**
-     * Adds a EventHandler which subscribes to a specific type of Event.
-     * @param eventType the type of the Event which the handler will handle.
-     * @param handler the EventHandler to be added.
+     * Adds a EventListener which subscribes to a specific type of Event.
+     * @param eventType the type of the Event which the listener will handle.
+     * @param listener the EventListener to be added.
      */
-    public void addEventHandler(EventType eventType, EventListener handler) {
-        listeners.get(eventType).add(handler);
+    public void addEventListener(EventType eventType, EventListener listener) {
+        listeners.get(eventType).add(listener);
     }
 
     /**
-     * Clears all EventHandlers recorded in the handlers HashMap.
-     * This should be called upon user logging out.
+     * Clears all EventListeners recorded in the listeners HashMap.
      */
     public void clearEventHandlers() {
         for (List<EventListener> handlerList : listeners.values()) {
