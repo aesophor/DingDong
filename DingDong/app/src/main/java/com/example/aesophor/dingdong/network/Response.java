@@ -2,8 +2,9 @@ package com.example.aesophor.dingdong.network;
 
 import java.util.Map;
 import java.util.HashMap;
-import com.google.gson.JsonObject;
+
 import com.example.aesophor.dingdong.util.NetworkUtils;
+import com.google.gson.JsonObject;
 
 public class Response {
 

@@ -39,7 +39,7 @@ public class MessagingFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         final Activity activity = (Activity) getContext();
-        ListView messageListView = activity.findViewById(R.id.messageListView);
+        final ListView messageListView = activity.findViewById(R.id.messageListView);
         messageListView.setAdapter(msgAdapter);
 
 
@@ -59,6 +59,7 @@ public class MessagingFragment extends Fragment {
                     public void run() {
                         User currentUser = activity.getUser();
                         msgAdapter.add(new Message(currentUser, targetUser, msg, false, true));
+                        messageListView.setSelection(msgAdapter.getCount() - 1);
                     }
                 });
             }

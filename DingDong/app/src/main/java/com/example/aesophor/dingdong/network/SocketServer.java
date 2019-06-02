@@ -1,5 +1,7 @@
 package com.example.aesophor.dingdong.network;
 
+import android.util.Log;
+
 import com.example.aesophor.dingdong.event.Event;
 import com.example.aesophor.dingdong.event.EventManager;
 
@@ -31,7 +33,7 @@ public class SocketServer implements Runnable {
     @Override
     public void run() {
         try {
-            System.out.printf("[*] Started listening for events on port %d\n", port);
+            Log.i("SocketServer.java", "[*] Started listening for events on port " + port);
             serverSocket = new ServerSocket(port);
 
             while (true) {
@@ -49,7 +51,7 @@ public class SocketServer implements Runnable {
 
         }
 
-        System.out.println("[*] Stopped listening for events.");
+        Log.i("SocketServer.java", "[*] Shutting down...");
     }
 
     public void shutdown() {

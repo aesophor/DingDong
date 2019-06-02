@@ -1,6 +1,5 @@
 package com.example.aesophor.dingdong.message;
 
-import com.example.aesophor.dingdong.MessengerActivity;
 import com.example.aesophor.dingdong.network.Response;
 import com.example.aesophor.dingdong.user.User;
 import com.example.aesophor.dingdong.util.NetworkUtils;

@@ -21,13 +21,20 @@ public class User {
         this.profile = new UserProfile(username, fullname);
     }
 
+    public User(String username, String fullname, String b64Avatar) {
+        this.profile = new UserProfile(username, fullname, b64Avatar);
+    }
+
+
     private void initProfile(String username) {
         String uri = String.format("user/%s", username);
         Response response = new Response(NetworkUtils.get(uri));
 
         if (response.success()) {
             Map<String, Object> json = response.getContent();
-            this.profile = new UserProfile(username, json.get("fullname").toString());
+            String fullname = json.get("fullname").toString();
+            String b64Avatar = json.get("avatar").toString();
+            this.profile = new UserProfile(username, fullname, b64Avatar);
         }
     }
 
@@ -85,7 +92,8 @@ public class User {
             for (JsonElement e: json) {
                 String username = e.getAsJsonObject().get("username").getAsString();
                 String fullname = e.getAsJsonObject().get("fullname").getAsString();
-                friends.add(new User(username, fullname));
+                String b64Avatar = e.getAsJsonObject().get("avatar").getAsString();
+                friends.add(new User(username, fullname, b64Avatar));
             }
         }
         return friends;
@@ -98,6 +106,10 @@ public class User {
 
     public String getFullname() {
         return profile.getFullname();
+    }
+
+    public String getB64Avatar() {
+        return profile.getB64Avatar();
     }
 
 

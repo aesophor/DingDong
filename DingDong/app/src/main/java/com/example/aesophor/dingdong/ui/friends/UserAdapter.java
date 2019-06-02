@@ -5,10 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.support.design.internal.NavigationMenu;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.aesophor.dingdong.MessengerActivity;
@@ -17,6 +22,7 @@ import com.example.aesophor.dingdong.ui.Fragments;
 import com.example.aesophor.dingdong.ui.chats.ChatsFragment;
 import com.example.aesophor.dingdong.ui.messaging.MessagingFragment;
 import com.example.aesophor.dingdong.user.User;
+import com.example.aesophor.dingdong.util.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,24 +70,31 @@ public class UserAdapter extends BaseAdapter {
         final User user = users.get(i);
 
         convertView = messageInflater.inflate(R.layout.layout_user_profile_item, null);
-        holder.avatar = (View) convertView.findViewById(R.id.avatar);
-        holder.name = (TextView) convertView.findViewById(R.id.name);
+        holder.avatar = convertView.findViewById(R.id.avatar);
+        holder.name = convertView.findViewById(R.id.name);
         convertView.setTag(holder);
 
-        GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
-        drawable.setColor(Color.parseColor("#a2c9b4"));
+        if (!user.getB64Avatar().isEmpty()) {
+            ImageUtils.b64LoadImage(holder.avatar, user.getB64Avatar());
+        } else {
+            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
+            drawable.setColor(Color.parseColor("#a2c9b4"));
+        }
+
         holder.name.setText(user.getFullname());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("clicked: " + user.getUsername());
-
+                // When the user clicks on a friend, take them to the chat view.
                 MessengerActivity messengerActivity = (MessengerActivity) context;
                 MessagingFragment msgFragment = (MessagingFragment) messengerActivity.getFragment(Fragments.MESSAGING);
 
                 msgFragment.setTargetUser(user);
                 messengerActivity.show(Fragments.MESSAGING);
+
+                BottomNavigationView menu = (BottomNavigationView) messengerActivity.findViewById(R.id.navigation);
+                menu.getMenu().getItem(1).setChecked(true);
             }
         });
 
@@ -89,7 +102,7 @@ public class UserAdapter extends BaseAdapter {
     }
 
     private class FriendViewHolder {
-        public View avatar;
+        public ImageView avatar;
         public TextView name;
     }
 

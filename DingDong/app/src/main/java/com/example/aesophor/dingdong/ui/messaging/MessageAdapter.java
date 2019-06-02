@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.aesophor.dingdong.R;
 import com.example.aesophor.dingdong.message.Message;
+import com.example.aesophor.dingdong.user.User;
+import com.example.aesophor.dingdong.util.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,15 +74,21 @@ public class MessageAdapter extends BaseAdapter {
 
             holder.name.setText(message.getSender().getUsername());
             holder.messageBody.setText(message.getContent());
-            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
-            drawable.setColor(Color.parseColor("#a2c9b4"));
+
+            User sender = message.getSender();
+            if (!sender.getB64Avatar().isEmpty()) {
+                ImageUtils.b64LoadImage(holder.avatar, sender.getB64Avatar());
+            } else {
+                GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
+                drawable.setColor(Color.parseColor("#a2c9b4"));
+            }
         }
 
         return convertView;
     }
 
     private class MessageViewHolder {
-        public View avatar;
+        public ImageView avatar;
         public TextView name;
         public TextView messageBody;
     }

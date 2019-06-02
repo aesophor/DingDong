@@ -2,6 +2,8 @@ package com.example.aesophor.dingdong;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import com.example.aesophor.dingdong.network.Response;
+import com.example.aesophor.dingdong.network.SocketServer;
 import com.example.aesophor.dingdong.ui.Fragments;
 import com.example.aesophor.dingdong.ui.chats.ChatsFragment;
 import com.example.aesophor.dingdong.ui.messaging.MessagingFragment;
@@ -25,13 +28,17 @@ import com.example.aesophor.dingdong.user.User;
 
 public class MessengerActivity extends AppCompatActivity {
 
-    private User user;
+    private ExecutorService executor; // for running SocketServer on a dedicated thread
     private List<Fragment> fragments;
+    private User user; // signed in user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messenger);
+
+        executor = Executors.newCachedThreadPool();
+        executor.execute(SocketServer.getInstance());
 
         user = new User(getIntent().getStringExtra("username"));
         Log.i("MessengerActivity.java", "logged in as: " + user.getUsername());
@@ -48,25 +55,22 @@ public class MessengerActivity extends AppCompatActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment selectedFragment = null;
-
                         switch (item.getItemId()) {
                             case R.id.navigation_friends: {
                                 show(Fragments.FRIENDS);
-                                break;
+                                return true;
                             }
                             case R.id.navigation_chats: {
                                 show(Fragments.CHATS);
-                                break;
+                                return true;
                             }
                             case R.id.navigation_settings: {
                                 show(Fragments.SETTINGS);
-                                break;
+                                return true;
                             }
                             default:
-                                break;
+                                return false;
                         }
-                        return true;
                     }
                 });
 
@@ -119,6 +123,7 @@ public class MessengerActivity extends AppCompatActivity {
             switch (signOut.getStatusCode()) {
                 case SUCCESS: {
                     startActivity(new Intent(MessengerActivity.this, SignInActivity.class));
+                    executor.shutdown();
                     break;
                 }
                 default:

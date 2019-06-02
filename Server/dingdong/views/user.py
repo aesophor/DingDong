@@ -8,6 +8,7 @@ from dingdong.sessions import OnlineUsers
 from dingdong.models import *
 
 import json
+import base64
 
 
 def get(request, username):
@@ -17,6 +18,7 @@ def get(request, username):
     response_data["content"] = {
         "username": user.username,
         "fullname": user.fullname,
+        "avatar": base64.b64encode(user.avatar).decode('ascii'),
         "friends": user.friends
     }
     return JsonResponse(response_data)
@@ -118,6 +120,7 @@ def list_friends(request, username):
             response_data["content"]["friends"].append({
                 "username": user.username,
                 "fullname": user.fullname,
+                "avatar": base64.b64encode(user.avatar).decode('ascii')
             })
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.NOT_REGISTERED
