@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import com.example.aesophor.dingdong.network.Response;
 import com.example.aesophor.dingdong.network.SocketServer;
+import com.example.aesophor.dingdong.network.StatusCode;
 import com.example.aesophor.dingdong.ui.Fragments;
 import com.example.aesophor.dingdong.ui.chats.ChatsFragment;
 import com.example.aesophor.dingdong.ui.messaging.MessagingFragment;
@@ -55,6 +57,7 @@ public class MessengerActivity extends AppCompatActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        ActionBar bar = getSupportActionBar();
                         switch (item.getItemId()) {
                             case R.id.navigation_friends: {
                                 show(Fragments.FRIENDS);
@@ -75,9 +78,7 @@ public class MessengerActivity extends AppCompatActivity {
                 });
 
         // Show the first segment.
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, fragments.get(0));
-        transaction.commit();
+        show(Fragments.FRIENDS);
     }
 
     @Override
@@ -110,6 +111,21 @@ public class MessengerActivity extends AppCompatActivity {
     }
 
     public void show(Fragments fragment) {
+        ActionBar bar = getSupportActionBar();
+        switch (fragment) {
+            case FRIENDS:
+                bar.setTitle("Friends");
+                break;
+            case CHATS:
+                MessagingFragment msgFragment = (MessagingFragment) fragments.get(Fragments.MESSAGING.ordinal());
+                User targetUser = msgFragment.getTargetUser();
+                bar.setTitle((targetUser != null) ? targetUser.getFullname() : "Empty chatroom");
+                break;
+            case SETTINGS:
+                bar.setTitle("Settings");
+                break;
+        }
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, fragments.get(fragment.ordinal()));
         transaction.commit();
@@ -137,7 +153,7 @@ public class MessengerActivity extends AppCompatActivity {
     private void addFriend() {
         final EditText usernameField = new EditText(MessengerActivity.this);
 
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(MessengerActivity.this)
                 .setTitle("Add Friend")
                 .setMessage("Please enter the friend's username")
                 .setView(usernameField)
@@ -145,10 +161,24 @@ public class MessengerActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String friendUsername = usernameField.getText().toString();
-                        user.addFriend(friendUsername);
+                        Response result = user.addFriend(friendUsername);
 
-                        FriendsFragment fragment = (FriendsFragment) fragments.get(Fragments.FRIENDS.ordinal());
-                        fragment.update();
+                        if (result.success()) {
+                            FriendsFragment fragment = (FriendsFragment) fragments.get(Fragments.FRIENDS.ordinal());
+                            fragment.update();
+                        } else if (result.getStatusCode() == StatusCode.NOT_REGISTERED) {
+                            new AlertDialog.Builder(MessengerActivity.this)
+                                    .setTitle("Failed")
+                                    .setMessage("The specified username doesn't exist")
+                                    .setPositiveButton(android.R.string.ok, null)
+                                    .show();
+                        } else {
+                            new AlertDialog.Builder(MessengerActivity.this)
+                                    .setTitle("Error")
+                                    .setMessage(result.getStatusCode().toString())
+                                    .setPositiveButton(android.R.string.ok, null)
+                                    .show();
+                        }
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)

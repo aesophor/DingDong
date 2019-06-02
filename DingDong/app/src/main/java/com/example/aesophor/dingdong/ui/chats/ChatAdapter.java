@@ -4,14 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.support.design.widget.BottomNavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.aesophor.dingdong.MessengerActivity;
 import com.example.aesophor.dingdong.R;
 import com.example.aesophor.dingdong.message.Message;
+import com.example.aesophor.dingdong.ui.Fragments;
+import com.example.aesophor.dingdong.ui.messaging.MessagingFragment;
+import com.example.aesophor.dingdong.user.User;
+import com.example.aesophor.dingdong.util.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,21 +65,42 @@ public class ChatAdapter extends BaseAdapter {
         LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         Message message = messages.get(i);
 
-        convertView = messageInflater.inflate(R.layout.msg_bubble_others, null);
+        convertView = messageInflater.inflate(R.layout.layout_chat_item, null);
         holder.avatar = convertView.findViewById(R.id.avatar);
         holder.name = convertView.findViewById(R.id.name);
-        holder.message = convertView.findViewById(R.id.message_body);
+        holder.message = convertView.findViewById(R.id.message);
+        holder.unreadBubble = convertView.findViewById(R.id.unreadBubble);
+        holder.unreadCount = convertView.findViewById(R.id.unreadCount);
         convertView.setTag(holder);
 
-        holder.name.setText(message.getSender().getUsername());
+        final User currentUser = ((MessengerActivity) context).getUser();
+        final User targetUser = (currentUser.getUsername().equals(message.getReceiver().getUsername())) ? message.getSender() : message.getReceiver();
+        holder.name.setText(targetUser.getFullname());
+        ImageUtils.b64LoadImage(holder.avatar, targetUser.getB64Avatar());
+
         holder.message.setText(message.getContent());
         holder.unreadCount.setText("5");
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // When the user clicks on a friend, take them to the chat view.
+                MessengerActivity messengerActivity = (MessengerActivity) context;
+                MessagingFragment msgFragment = (MessagingFragment) messengerActivity.getFragment(Fragments.MESSAGING);
+
+                msgFragment.setTargetUser(targetUser);
+                messengerActivity.show(Fragments.MESSAGING);
+
+                BottomNavigationView menu = messengerActivity.findViewById(R.id.navigation);
+                menu.getMenu().getItem(1).setChecked(true);
+            }
+        });
 
         return convertView;
     }
 
     private class ChatViewHolder {
-        public View avatar;
+        public ImageView avatar;
         public TextView name;
         public TextView message;
         public View unreadBubble;

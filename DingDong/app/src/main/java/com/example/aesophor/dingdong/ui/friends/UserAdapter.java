@@ -3,6 +3,8 @@ package com.example.aesophor.dingdong.ui.friends;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.design.internal.NavigationMenu;
@@ -77,8 +79,8 @@ public class UserAdapter extends BaseAdapter {
         if (!user.getB64Avatar().isEmpty()) {
             ImageUtils.b64LoadImage(holder.avatar, user.getB64Avatar());
         } else {
-            GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
-            drawable.setColor(Color.parseColor("#a2c9b4"));
+
+            holder.avatar.setImageResource(R.mipmap.default_avatar);
         }
 
         holder.name.setText(user.getFullname());
@@ -93,7 +95,7 @@ public class UserAdapter extends BaseAdapter {
                 msgFragment.setTargetUser(user);
                 messengerActivity.show(Fragments.MESSAGING);
 
-                BottomNavigationView menu = (BottomNavigationView) messengerActivity.findViewById(R.id.navigation);
+                BottomNavigationView menu = messengerActivity.findViewById(R.id.navigation);
                 menu.getMenu().getItem(1).setChecked(true);
             }
         });

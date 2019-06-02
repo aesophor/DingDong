@@ -33,7 +33,7 @@ public class MessagingFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_chats, container, false);
+        return inflater.inflate(R.layout.fragment_messaging, container, false);
     }
 
     @Override
@@ -75,6 +75,7 @@ public class MessagingFragment extends Fragment {
         });
 
         update();
+        messageListView.setSelection(msgAdapter.getCount() - 1);
     }
 
 
@@ -94,6 +95,10 @@ public class MessagingFragment extends Fragment {
         });
     }
 
+
+    public User getTargetUser() {
+        return targetUser;
+    }
 
     public void setTargetUser(User user) {
         targetUser = user;

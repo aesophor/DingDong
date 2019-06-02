@@ -10,8 +10,8 @@
     <ImageView
         android:id="@+id/avatar"
         android:layout_alignParentLeft="true"
-        android:scaleType="centerInside"
-        android:background="@drawable/avatar_circle"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
         android:layout_width="34dp"
         android:layout_height="34dp"/>
 
@@ -24,4 +24,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"/>
+
 </RelativeLayout>

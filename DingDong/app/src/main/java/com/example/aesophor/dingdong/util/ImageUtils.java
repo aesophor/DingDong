@@ -4,6 +4,8 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.widget.ImageView;
 
+import com.example.aesophor.dingdong.R;
+
 public class ImageUtils {
 
     private ImageUtils() {
@@ -11,8 +13,12 @@ public class ImageUtils {
     }
 
     public static void b64LoadImage(ImageView imageView, String b64string) {
-        byte[] imageAsBytes = Base64.decode(b64string.getBytes(), Base64.DEFAULT);
-        imageView.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+        if (!b64string.isEmpty()) {
+            byte[] imageAsBytes = Base64.decode(b64string.getBytes(), Base64.DEFAULT);
+            imageView.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+        } else {
+            imageView.setImageResource(R.mipmap.default_avatar);
+        }
     }
 
 }

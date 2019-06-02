@@ -72,16 +72,11 @@ public class MessageAdapter extends BaseAdapter {
             holder.messageBody = convertView.findViewById(R.id.message_body);
             convertView.setTag(holder);
 
-            holder.name.setText(message.getSender().getUsername());
+            holder.name.setText(message.getSender().getFullname());
             holder.messageBody.setText(message.getContent());
 
             User sender = message.getSender();
-            if (!sender.getB64Avatar().isEmpty()) {
-                ImageUtils.b64LoadImage(holder.avatar, sender.getB64Avatar());
-            } else {
-                GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
-                drawable.setColor(Color.parseColor("#a2c9b4"));
-            }
+            ImageUtils.b64LoadImage(holder.avatar, sender.getB64Avatar());
         }
 
         return convertView;
