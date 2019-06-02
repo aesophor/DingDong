@@ -42,7 +42,6 @@ public class MessagingFragment extends Fragment {
         final ListView messageListView = activity.findViewById(R.id.messageListView);
         messageListView.setAdapter(msgAdapter);
 
-
         ImageButton sendButton = activity.findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new ImageButton.OnClickListener() {
             @Override

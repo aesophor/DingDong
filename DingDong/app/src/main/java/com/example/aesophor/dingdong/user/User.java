@@ -67,6 +67,17 @@ public class User {
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
 
+    public Response update(String fullname, String password) {
+        String uri = "user/update";
+
+        JsonObject json = new JsonObject();
+        json.addProperty("username", getUsername());
+        json.addProperty("fullname", fullname);
+        json.addProperty("password", password);
+
+        return new Response(NetworkUtils.post(uri, json.toString()));
+    }
+
     public static Response listFriends(String username) {
         String uri = String.format("user/%s/friends", username);
         return new Response(NetworkUtils.get(uri));

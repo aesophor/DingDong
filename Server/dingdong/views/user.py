@@ -94,10 +94,10 @@ def update(request):
         fullname = req_body["fullname"]
         password = req_body["password"]
 
-        User.objects.get(username=username).update(
-            fullname = fullname,
-            password = password
-        )
+        user = User.objects.get(username=username)
+        user.fullname = fullname
+        user.password = password
+        user.save()
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
