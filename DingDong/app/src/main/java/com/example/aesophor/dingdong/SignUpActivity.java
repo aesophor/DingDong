@@ -42,6 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
             switch (signUp.getStatusCode()) {
                 case SUCCESS: {
                     startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+                    finish();
                     break;
                 }
                 case ALREADY_REGISTERED: {

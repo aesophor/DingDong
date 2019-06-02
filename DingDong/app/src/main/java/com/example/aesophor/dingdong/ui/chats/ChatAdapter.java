@@ -2,15 +2,13 @@ package com.example.aesophor.dingdong.ui.chats;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.aesophor.dingdong.MessengerActivity;
@@ -93,6 +91,10 @@ public class ChatAdapter extends BaseAdapter {
 
                 BottomNavigationView menu = messengerActivity.findViewById(R.id.navigation);
                 menu.getMenu().getItem(1).setChecked(true);
+
+                // Set the damn ActionBar god dammit
+                ActionBar bar = ((MessengerActivity) context).getSupportActionBar();
+                bar.setTitle(targetUser.getFullname());
             }
         });
 

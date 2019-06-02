@@ -82,6 +82,12 @@ public class MessengerActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        signOut();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.overflow_menu, menu);
@@ -117,9 +123,7 @@ public class MessengerActivity extends AppCompatActivity {
                 bar.setTitle("Friends");
                 break;
             case CHATS:
-                MessagingFragment msgFragment = (MessagingFragment) fragments.get(Fragments.MESSAGING.ordinal());
-                User targetUser = msgFragment.getTargetUser();
-                bar.setTitle((targetUser != null) ? targetUser.getFullname() : "Empty chatroom");
+                bar.setTitle("Chats");
                 break;
             case SETTINGS:
                 bar.setTitle("Settings");

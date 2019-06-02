@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -76,12 +77,7 @@ public class UserAdapter extends BaseAdapter {
         holder.name = convertView.findViewById(R.id.name);
         convertView.setTag(holder);
 
-        if (!user.getB64Avatar().isEmpty()) {
-            ImageUtils.b64LoadImage(holder.avatar, user.getB64Avatar());
-        } else {
-
-            holder.avatar.setImageResource(R.mipmap.default_avatar);
-        }
+        ImageUtils.b64LoadImage(holder.avatar, user.getB64Avatar());
 
         holder.name.setText(user.getFullname());
 
@@ -97,6 +93,10 @@ public class UserAdapter extends BaseAdapter {
 
                 BottomNavigationView menu = messengerActivity.findViewById(R.id.navigation);
                 menu.getMenu().getItem(1).setChecked(true);
+
+                // Set the damn ActionBar god dammit
+                ActionBar bar = ((MessengerActivity) context).getSupportActionBar();
+                bar.setTitle(user.getFullname());
             }
         });
 
