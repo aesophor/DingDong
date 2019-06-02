@@ -1,4 +1,4 @@
-package com.example.aesophor.dingdong.ui;
+package com.example.aesophor.dingdong.ui.chats;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +27,12 @@ public class MessageAdapter extends BaseAdapter {
 
     public void add(Message message) {
         messages.add(message);
-        notifyDataSetChanged(); // to render the list we need to notify
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        messages.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -53,12 +58,12 @@ public class MessageAdapter extends BaseAdapter {
         Message message = messages.get(i);
 
         if (message.isBelongsToCurrentUser()) { // this message was sent by us so let's create a basic chat bubble on the right
-            convertView = messageInflater.inflate(R.layout.self_message_bubble, null);
+            convertView = messageInflater.inflate(R.layout.msg_bubble_self, null);
             holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
             convertView.setTag(holder);
             holder.messageBody.setText(message.getContent());
         } else { // this message was sent by someone else so let's create an advanced chat bubble on the left
-            convertView = messageInflater.inflate(R.layout.others_message_bubble, null);
+            convertView = messageInflater.inflate(R.layout.msg_bubble_others, null);
             holder.avatar = (View) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);

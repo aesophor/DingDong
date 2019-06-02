@@ -17,24 +17,8 @@ def get(request, username):
     response_data["content"] = {
         "username": user.username,
         "fullname": user.fullname,
+        "friends": user.friends
     }
-    return JsonResponse(response_data)
-
-
-def list_friends(request, username):
-    response_data = {"statusCode": StatusCode.SUCCESS}
-
-    try:
-        friends = json.loads(User.objects.get(username=username).friends)
-
-        response_data["content"] = {
-            "friends": [{
-                "username": user.username,
-                "fullname": user.fullname,
-            } for user in friends]
-        }
-    except ObjectDoesNotExist:
-        response_data["statusCode"] = StatusCode.NOT_REGISTERED
     return JsonResponse(response_data)
 
 
@@ -119,26 +103,51 @@ def update(request):
     return JsonResponse(response_data)
 
 
-def add_friend(request):
+def list_friends(request, username):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        friends = json.loads(User.objects.get(username=username).friends)
+
+        response_data["content"] = {
+            "friends": []
+        }
+
+        for username in friends:
+            user = User.objects.get(username=username)
+            response_data["content"]["friends"].append({
+                "username": user.username,
+                "fullname": user.fullname,
+            })
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.NOT_REGISTERED
+    return JsonResponse(response_data)
+
+
+def add_friend(request, username):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
     try:
         req_body = json.loads(request.body.decode("utf-8"))
-        source_username = req_body["sourceUsername"]
+        source_username = username
         target_username = req_body["targetUsername"]
 
         source_user = User.objects.get(username=source_username)
         target_user = User.objects.get(username=target_username)
 
         # Add target_user to source_user's friend list.
-        friends = json.loads(source_user.friends)
-        friends.append(target_username)
-        source_user.update(friends=json.dumps(friends))
+        source_user_friends = json.loads(source_user.friends)
+        if target_username not in source_user_friends:
+            source_user_friends.append(target_username)
+            source_user.friends = json.dumps(source_user_friends)
+            source_user.save()
 
         # Add source_user to target_user's friend list.
-        friends = json.loads(target_user.friends)
-        friends.append(source_username)
-        target_user.update(friends=json.dumps(friends))
+        target_user_friends = json.loads(target_user.friends)
+        if source_username not in target_user_friends:
+            target_user_friends.append(source_username)
+            target_user.friends = json.dumps(target_user_friends)
+            target_user.save()
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:

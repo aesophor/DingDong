@@ -4,6 +4,11 @@
     tools:context="com.example.prosen.menuexample.MenuExampleActivity">
     <group>
         <item
+            android:id="@+id/addFriend"
+            android:orderInCategory="1"
+            app:showAsAction="always"
+            android:title="Add"/>
+        <item
             android:id="@+id/signOut"
             android:orderInCategory="1"
             app:showAsAction="never"

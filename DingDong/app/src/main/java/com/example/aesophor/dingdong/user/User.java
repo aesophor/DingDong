@@ -1,8 +1,12 @@
 package com.example.aesophor.dingdong.user;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import com.example.aesophor.dingdong.network.Response;
 import com.example.aesophor.dingdong.util.NetworkUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class User {
@@ -28,11 +32,6 @@ public class User {
     }
 
 
-    public static Response listFriends(String username) {
-        String uri = String.format("user/%s/friends", username);
-        return new Response(NetworkUtils.get(uri));
-    }
-
     public static Response register(String username, String fullname, String password) {
         String uri = String.format("user/register");
 
@@ -57,9 +56,41 @@ public class User {
         String uri = "user/logout";
 
         JsonObject json = new JsonObject();
-        json.addProperty("username", this.getUsername());
+        json.addProperty("username", getUsername());
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
+
+    public static Response listFriends(String username) {
+        String uri = String.format("user/%s/friends", username);
+        return new Response(NetworkUtils.get(uri));
+    }
+
+    public Response addFriend(String friendUsername) {
+        String uri = String.format("user/%s/friends/add", getUsername());
+
+        JsonObject json = new JsonObject();
+        json.addProperty("targetUsername", friendUsername);
+        return new Response(NetworkUtils.post(uri, json.toString()));
+    }
+
+
+    public List<User> getFriends() {
+        List<User> friends = new ArrayList<>();
+        Response list = listFriends(getUsername());
+
+        if (list.success()) {
+            String raw = NetworkUtils.getGson().toJson(list.getContent().get("friends"));
+            JsonArray json = NetworkUtils.getGson().fromJson(raw, JsonArray.class);
+
+            for (JsonElement e: json) {
+                String username = e.getAsJsonObject().get("username").getAsString();
+                String fullname = e.getAsJsonObject().get("fullname").getAsString();
+                friends.add(new User(username, fullname));
+            }
+        }
+        return friends;
+    }
+
 
     public String getUsername() {
         return profile.getUsername();

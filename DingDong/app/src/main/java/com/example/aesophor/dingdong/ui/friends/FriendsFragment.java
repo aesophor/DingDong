@@ -1,4 +1,4 @@
-package com.example.aesophor.dingdong.ui;
+package com.example.aesophor.dingdong.ui.friends;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,37 +8,49 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.example.aesophor.dingdong.MessengerActivity;
 import com.example.aesophor.dingdong.R;
-import com.example.aesophor.dingdong.message.Message;
 import com.example.aesophor.dingdong.user.User;
 
-public class ChatsFragment extends Fragment {
+import java.util.List;
 
-    private MessageAdapter msgAdapter;
+public class FriendsFragment extends Fragment {
+
+    private UserAdapter userAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        msgAdapter = new MessageAdapter(getContext());
+        userAdapter = new UserAdapter(getContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.chats_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_friends, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        update();
+    }
+
+    public void update() {
         Activity mainActivity = (Activity) getContext();
-        ListView messageListView = mainActivity.findViewById(R.id.messages_view);
-        messageListView.setAdapter(msgAdapter);
+        ListView messageListView = mainActivity.findViewById(R.id.friendsListView);
+        messageListView.setAdapter(userAdapter);
 
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                msgAdapter.add(new Message(new User("aesophor", "Marco"), "hi", true));
-                msgAdapter.add(new Message(new User("jimmy586586", "Jim"), "there", false));
-                msgAdapter.notifyDataSetChanged();
+                userAdapter.clear();
+                userAdapter.add(new User("aesophor", "Marco"));
+
+                List<User> friends = ((MessengerActivity) getActivity()).getUser().getFriends();
+                for (User friend : friends) {
+                    userAdapter.add(friend);
+                }
+                userAdapter.notifyDataSetChanged();
             }
         });
     }
