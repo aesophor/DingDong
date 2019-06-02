@@ -109,6 +109,14 @@ public class MessengerActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.about: {
+                new AlertDialog.Builder(MessengerActivity.this)
+                        .setTitle("DingDong")
+                        .setMessage(
+                          "A chat application created with RESTful architecture.\n\n"
+                        + "University of Taipei Android App Development 2019 Spring semester project "
+                        + "developed by Marco Wang and Ariel Hsu.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
                 return true;
             }
             default:
