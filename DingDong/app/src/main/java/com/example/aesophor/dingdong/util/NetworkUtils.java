@@ -24,7 +24,7 @@ public class NetworkUtils {
         JSON = MediaType.parse("application/json; charset=utf-8");
         CLIENT = new OkHttpClient();
         GSON = new Gson();
-        SERVER_URL = "192.168.1.102";
+        SERVER_URL = "10.1.204.186";
         SERVER_PORT = 8000;
     }
 
