@@ -5,6 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/labelUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UserID"
+        app:layout_constraintLeft_toLeftOf="@+id/labelPassWord"
+        app:layout_constraintBaseline_toBaselineOf="@+id/usernameField"/>
+        />
+    <TextView
+        android:id="@+id/labelPassWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text="Password"
+        app:layout_constraintRight_toLeftOf="@+id/passwordField"
+        app:layout_constraintBaseline_toBaselineOf="@+id/passwordField"
+         />
+
+    <TextView
+        android:id="@+id/labelFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FullName"
+        app:layout_constraintLeft_toLeftOf="@+id/labelPassWord"
+        app:layout_constraintBaseline_toBaselineOf="@+id/fullnameField"
+         />
+
     <EditText
         android:id="@+id/usernameField"
         android:layout_width="wrap_content"
@@ -14,15 +41,16 @@
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/passwordField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
+        android:textSize="15dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -36,12 +64,12 @@
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"
         android:layout_marginTop="22dp"
+        android:textSize="15dp"
         android:ems="10"
         android:hint="Fullname"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="@+id/usernameField"
         app:layout_constraintTop_toBottomOf="@+id/usernameField" />
-
     <Button
         android:id="@+id/updateButton"
         android:layout_width="wrap_content"
@@ -51,4 +79,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+
+
 </android.support.constraint.ConstraintLayout>
