@@ -10,16 +10,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UserID"
-        app:layout_constraintLeft_toLeftOf="@+id/labelPassWord"
+        app:layout_constraintEnd_toStartOf="@+id/usernameField"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@+id/usernameField"/>
         />
     <TextView
         android:id="@+id/labelPassWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
         android:text="Password"
-        app:layout_constraintRight_toLeftOf="@+id/passwordField"
+        app:layout_constraintEnd_toStartOf="@+id/passwordField"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@+id/passwordField"
          />
 
@@ -28,7 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FullName"
-        app:layout_constraintLeft_toLeftOf="@+id/labelPassWord"
+        app:layout_constraintEnd_toStartOf="@+id/fullnameField"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@+id/fullnameField"
          />
 
@@ -42,8 +44,8 @@
         android:hint="Username"
         android:inputType="textPersonName"
         android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/labelUser"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <EditText
         android:id="@+id/passwordField"
@@ -70,15 +72,37 @@
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="@+id/usernameField"
         app:layout_constraintTop_toBottomOf="@+id/usernameField" />
+
+    <Button
+        android:id="@+id/avatarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Choose Photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatarSet"/>
+
+    <ImageView
+        android:id="@+id/avatarSet"
+        android:layout_width="50dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="40dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+
     <Button
         android:id="@+id/updateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="10dp"
         android:text="Update"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+        app:layout_constraintTop_toBottomOf="@+id/avatarButton" />
 
 
 </android.support.constraint.ConstraintLayout>

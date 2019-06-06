@@ -1,22 +1,33 @@
 package com.example.aesophor.dingdong.ui.settings;
 
-import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.annotation.*;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.ImageView;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.app.ActivityCompat;
+import android.content.pm.PackageManager;
+import android.widget.*;
 import com.example.aesophor.dingdong.MessengerActivity;
 import com.example.aesophor.dingdong.R;
 import com.example.aesophor.dingdong.network.Response;
 import com.example.aesophor.dingdong.user.User;
+import com.example.aesophor.dingdong.util.ImageUtils;
 
 public class SettingsFragment extends Fragment {
+    public static final int CHOOSE_PHOTO=2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,10 +46,21 @@ public class SettingsFragment extends Fragment {
         final EditText fullnameField = activity.findViewById(R.id.fullnameField);
         final EditText passwordField = activity.findViewById(R.id.passwordField);
         Button updateButton = activity.findViewById(R.id.updateButton);
+        Button avatarButton = activity.findViewById(R.id.avatarButton);
+        final ImageView avatarSet = activity.findViewById(R.id.avatarSet);
+
 
         final User currentUser = activity.getUser();
         usernameField.setText(currentUser.getUsername());
         fullnameField.setText(currentUser.getFullname());
+        ImageUtils.b64LoadImage(avatarSet, currentUser.getB64Avatar());
+
+
+        avatarButton.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v) {
+
+            }
+        });
 
         updateButton.setOnClickListener(new Button.OnClickListener() {
             @Override
