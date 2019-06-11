@@ -93,10 +93,12 @@ def update(request):
         username = req_body["username"]
         fullname = req_body["fullname"]
         password = req_body["password"]
+        avatar = base64.b64decode(req_body["avatar"])
 
         user = User.objects.get(username=username)
         user.fullname = fullname
         user.password = password
+        user.avatar = avatar
         user.save()
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS

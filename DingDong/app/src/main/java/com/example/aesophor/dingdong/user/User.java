@@ -67,13 +67,14 @@ public class User {
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
 
-    public Response update(String fullname, String password) {
+    public Response update(String fullname, String password, String b64Avatar) {
         String uri = "user/update";
 
         JsonObject json = new JsonObject();
         json.addProperty("username", getUsername());
         json.addProperty("fullname", fullname);
         json.addProperty("password", password);
+        json.addProperty("avatar", b64Avatar);
 
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
