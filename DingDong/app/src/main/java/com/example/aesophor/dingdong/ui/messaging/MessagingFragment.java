@@ -67,9 +67,15 @@ public class MessagingFragment extends Fragment {
 
         EventManager.getInstance().addEventListener(EventType.NEW_MESSAGE, new EventListener<NewMessageEvent>() {
             @Override
-            public void handle(NewMessageEvent e) {
-                Message msg = e.getMessage();
-                msgAdapter.add(new Message(msg.getSender(), msg.getReceiver(), msg.getContent(), false, false));
+            public void handle(final NewMessageEvent e) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = e.getMessage();
+                        msgAdapter.add(new Message(msg.getSender(), msg.getReceiver(), msg.getContent(), false, false));
+                        messageListView.setSelection(msgAdapter.getCount() - 1);
+                    }
+                });
             }
         });
 

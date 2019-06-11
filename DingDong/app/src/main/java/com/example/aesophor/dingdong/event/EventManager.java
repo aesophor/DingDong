@@ -14,10 +14,6 @@ public class EventManager {
     private EventManager() {
         listeners = new HashMap<>();
 
-        // List of handlers for events of user login/logout.
-        listeners.put(EventType.LOGIN, new ArrayList<EventListener>());
-        listeners.put(EventType.LOGOUT, new ArrayList<EventListener>());
-
         // List of handlers for events of new messages arrival.
         listeners.put(EventType.NEW_MESSAGE, new ArrayList<EventListener>());
     }
