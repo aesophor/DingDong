@@ -61,6 +61,9 @@ public class MessagingFragment extends Fragment {
                         messageListView.setSelection(msgAdapter.getCount() - 1);
                     }
                 });
+
+                String json = "{\"eventType\": 0, \"content\": {\"source_user\": {\"username\": \"marco\", \"fullname\": \"Marco Wang\"}, \"target_user\": {\"username\": \"ariel\", \"fullname\": \"Ariel Music\"}, \"content\": \"gg\"}}";
+                EventManager.getInstance().fireEvent(new NewMessageEvent(json));
             }
         });
 

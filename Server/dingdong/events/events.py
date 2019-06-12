@@ -2,6 +2,7 @@ from dingdong.events.event_type import EventType
 from dingdong.models import *
 
 import json
+import base64
 
 
 class Event:
@@ -55,13 +56,16 @@ class NewMessageEvent(Event):
         event["content"] = {
             "source_user": {
                 "username": self.source_user.username,
-                "fullname": self.source_user.fullname
+                "fullname": self.source_user.fullname,
+                "avatar": base64.b64encode(self.source_user.avatar).decode('ascii')
             },
             "target_user": {
                 "username": self.target_user.username,
-                "fullname": self.target_user.fullname
+                "fullname": self.target_user.fullname,
+                "avatar": base64.b64encode(self.target_user.avatar).decode('ascii')
             },
             "content": self.content,
         }
 
+        print(json.dumps(event))
         return json.dumps(event)
