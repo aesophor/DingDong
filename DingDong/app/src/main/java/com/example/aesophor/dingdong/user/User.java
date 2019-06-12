@@ -124,6 +124,10 @@ public class User {
         return profile.getB64Avatar();
     }
 
+    public void setB64Avatar(String b64Avatar) {
+        profile.setB64Avatar(b64Avatar);
+    }
+
 
     @Override
     public boolean equals(Object o) {

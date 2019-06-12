@@ -85,6 +85,7 @@ public class SettingsFragment extends Fragment {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                 byte[] byteArray = byteArrayOutputStream .toByteArray();
                 String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                activity.getUser().setB64Avatar(encoded);
 
                 Response update = currentUser.update(fullnameField.getText().toString(), passwordField.getText().toString(), encoded);
                 if (update.success()) {

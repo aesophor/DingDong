@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.aesophor.dingdong.event.Event;
 import com.example.aesophor.dingdong.event.EventManager;
+import com.example.aesophor.dingdong.event.message.NewMessageEvent;
 
 import java.net.*;
 import java.io.*;
@@ -43,7 +44,7 @@ public class SocketServer implements Runnable {
                 String e = br.readLine();
 
                 System.out.println("Received: " + e);
-                eventManager.fireEvent(new Event(e).toConcreteEvent());
+                eventManager.fireEvent(new NewMessageEvent(e));
 
                 socket.close();
             }
