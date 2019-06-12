@@ -9,6 +9,7 @@ class Event:
         self.event_type = event_type
 
 
+"""
 class LoginEvent(Event):
     def __init__(self, user: User):
         super(LoginEvent, self).__init__(EventType.LOGIN)
@@ -39,7 +40,7 @@ class LogoutEvent(Event):
         }
 
         return json.dumps(event)
-
+"""
 
 class NewMessageEvent(Event):
     def __init__(self, source_user: User, target_user: User, content: str):
