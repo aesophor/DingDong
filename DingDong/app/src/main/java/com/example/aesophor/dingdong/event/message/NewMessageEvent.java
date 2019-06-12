@@ -21,13 +21,15 @@ public class NewMessageEvent extends Event {
         JsonObject userJson = NetworkUtils.getGson().fromJson(rawUserJson, JsonObject.class);
         String username = userJson.get("username").getAsString();
         String fullname = userJson.get("fullname").getAsString();
-        User sender = new User(username, fullname);
+        String avatar = userJson.get("avatar").getAsString();
+        User sender = new User(username, fullname, avatar);
 
         rawUserJson = NetworkUtils.getGson().toJson(content.get("target_user"));
         userJson = NetworkUtils.getGson().fromJson(rawUserJson, JsonObject.class);
         username = userJson.get("username").getAsString();
         fullname = userJson.get("fullname").getAsString();
-        User receiver = new User(username, fullname);
+        avatar = userJson.get("avatar").getAsString();
+        User receiver = new User(username, fullname, avatar);
 
         String msgContent = content.get("content").toString();
 
